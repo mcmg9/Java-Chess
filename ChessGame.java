@@ -6,25 +6,25 @@ import java.io.*;
 import javax.swing.JFrame;
 public class ChessGame{
   
-  public static int playerTurn = 0;
+  public static int playerTurn = 1;
   public static int gameNumMoves = 0;
   
   public static void main(String [] args){
     
-    //getting high score
-    String scoreString = "";
-    int oldScore = 0;   
-    try {
-      File highScore = new File("WinningScores.txt");
-      FileReader in = new FileReader(highScore);
-      BufferedReader br = new BufferedReader(in);
-      scoreString = br.readLine();
-      oldScore = Integer.parseInt(scoreString);
-    }catch(FileNotFoundException e){
-      System.out.println(e);
-    } catch (IOException e2) {
-      System.out.println(e2);
-    }
+//    //getting high score
+//    String scoreString = "";
+//    int oldScore = 0;   
+//    try {
+//      File highScore = new File("WinningScores.txt");
+//      FileReader in = new FileReader(highScore);
+//      BufferedReader br = new BufferedReader(in);
+//      scoreString = br.readLine();
+//      oldScore = Integer.parseInt(scoreString);
+//    }catch(FileNotFoundException e){
+//      System.out.println(e);
+//    } catch (IOException e2) {
+//      System.out.println(e2);
+//    }
     
     //what piece they want to move
     int playerChoiceX;
@@ -99,16 +99,16 @@ public class ChessGame{
     
     chessBoard[0][3] = queen1;
     chessBoardGui.giveIcon(chessBoardGui.getButtonArray(), 0, 3, 'q', 1);
-    chessBoard[7][4] = queen2;
-    chessBoardGui.giveIcon(chessBoardGui.getButtonArray(), 7, 4, 'q', 2);
+    chessBoard[7][3] = queen2;
+    chessBoardGui.giveIcon(chessBoardGui.getButtonArray(), 7, 3, 'q', 2);
     
     ChessPiece king1 = new ChessPiece(3, 1);
     ChessPiece king2 = new ChessPiece(3, 2);
     
     chessBoard[0][4] = king1;
     chessBoardGui.giveIcon(chessBoardGui.getButtonArray(), 0, 4, 'K', 1);
-    chessBoard[7][3] = king2;
-    chessBoardGui.giveIcon(chessBoardGui.getButtonArray(), 7, 3, 'K', 2);
+    chessBoard[7][4] = king2;
+    chessBoardGui.giveIcon(chessBoardGui.getButtonArray(), 7, 4, 'K', 2);
     
     while(winCondition == false){
       
@@ -128,6 +128,9 @@ public class ChessGame{
         playerChoiceX = chessBoardGui.getButtonCoordChoiceY();
         playerChoiceY = chessBoardGui.getButtonCoordChoiceX();
       }
+      
+      chessBoardGui.changeButtonBlue(playerChoiceY, playerChoiceX);
+      
       playerMoveX = 8;
       playerMoveY = 8;
       while(playerMoveX == 8 || playerMoveY == 8){
@@ -135,6 +138,8 @@ public class ChessGame{
         playerMoveX = chessBoardGui.getButtonCoordMoveY();
         playerMoveY = chessBoardGui.getButtonCoordMoveX();
       }
+      
+      chessBoardGui.changeButtonNorm(playerChoiceY, playerChoiceX);
       
       if (playerTurn % 2 == 0){ //player 1 move
         
@@ -147,10 +152,10 @@ public class ChessGame{
                     if (chessBoard[playerMoveY][playerMoveX] == null){
                       movePiece(chessBoard, playerChoiceX, playerChoiceY, playerMoveX, playerMoveY, pawn1, chessBoardGui, 'p');
                     }else{
-                      System.out.println("Invalid move, piece cannot move that way"); 
+                      chessBoardGui.errMessage();
                     }
                   }else{
-                    System.out.println("Invalid move, piece cannot move that way"); 
+                    chessBoardGui.errMessage();
                   }
                 }else if (playerChoiceY - playerMoveY == -1){ //if the piece has moved one space
                   if (chessBoard[playerMoveY][playerMoveX] == null){
@@ -160,23 +165,23 @@ public class ChessGame{
                       movePiece(chessBoard, playerChoiceX, playerChoiceY, playerMoveX, playerMoveY, pawn1, chessBoardGui, 'p');
                     }
                   }else{
-                    System.out.println("Invalid move, piece cannot move that way");
+                    chessBoardGui.errMessage();
                   }
                 }else{
-                  System.out.println("Invalid move, piece cannot move that way"); 
+                  chessBoardGui.errMessage();
                 }
               }else if (playerChoiceX - playerMoveX == 1 || playerChoiceX - playerMoveX == -1){ //if the move is diagonal
                 if (playerChoiceY - playerMoveY == -1){
                   if (chessBoard[playerMoveY][playerMoveX] != null){
                     movePiece(chessBoard, playerChoiceX, playerChoiceY, playerMoveX, playerMoveY, pawn1, chessBoardGui, 'p');
                   }else{
-                    System.out.println("Invalid move, piece cannot move that way"); 
+                    chessBoardGui.errMessage();
                   }
                 }else{
-                  System.out.println("Invalid move, piece cannot move that way"); 
+                  chessBoardGui.errMessage();
                 }
               }else{
-                System.out.println("Invalid move, piece cannot move that way"); 
+                chessBoardGui.errMessage();
               }
             }else if (chessBoard[playerChoiceY][playerChoiceX] == tower1){ //if the piece is a tower
               if (playerChoiceY - playerMoveY == 0 && playerChoiceX - playerMoveX != 0){ //if the tower moves along x axis
@@ -190,7 +195,7 @@ public class ChessGame{
                       movePiece(chessBoard, playerChoiceX, playerChoiceY, playerMoveX, playerMoveY, tower1 , chessBoardGui, 't');
                       
                     }else{
-                      System.out.println("Invalid move, piece cannot move that way");
+                      chessBoardGui.errMessage();
                     }
                   }
                 }else{ //if it is moving right 
@@ -203,7 +208,7 @@ public class ChessGame{
                       movePiece(chessBoard, playerChoiceX, playerChoiceY, playerMoveX, playerMoveY, tower1 , chessBoardGui, 't');
                       
                     }else{
-                      System.out.println("Invalid move, piece cannot move that way"); 
+                      chessBoardGui.errMessage();
                     }
                   }
                 }    
@@ -218,7 +223,7 @@ public class ChessGame{
                       movePiece(chessBoard, playerChoiceX, playerChoiceY, playerMoveX, playerMoveY, tower1 , chessBoardGui, 't');
                       
                     }else{
-                      System.out.println("Invalid move, piece cannot move that way"); 
+                      chessBoardGui.errMessage();
                     }
                   }
                 }else{ //if it is moving up
@@ -231,12 +236,12 @@ public class ChessGame{
                       movePiece(chessBoard, playerChoiceX, playerChoiceY, playerMoveX, playerMoveY, tower1 , chessBoardGui, 't');
                       
                     }else{
-                      System.out.println("Invalid move, piece cannot move that way"); 
+                      chessBoardGui.errMessage();
                     }
                   }
                 }
               }else{
-                System.out.println("Invalid move, piece cannot move that way"); 
+                chessBoardGui.errMessage();
               }
             }else if (chessBoard[playerChoiceY][playerChoiceX] == knight1){ //if the piece is a knight
               if (((Math.abs(playerChoiceX - playerMoveX)) == 2) && (Math.abs(playerChoiceY - playerMoveY) == 1)){ //if it moves 2 spaces on the x axis and one on the y axis
@@ -244,7 +249,7 @@ public class ChessGame{
               }else if(((Math.abs(playerChoiceX - playerMoveX)) == 1) && (Math.abs(playerChoiceY - playerMoveY) == 2)){ //if it moves 2 spaces on the y axis and one on the x axis
                 movePiece(chessBoard, playerChoiceX, playerChoiceY, playerMoveX, playerMoveY, knight1 , chessBoardGui, 'k');
               }else{
-                System.out.println("Invalid move, piece cannot move that way");
+                chessBoardGui.errMessage();
               }
               //dont need to worry about spaces (can jump over pieces)
             }else if (chessBoard[playerChoiceY][playerChoiceX] == bishop1){ //if the piece is a bishop
@@ -259,7 +264,7 @@ public class ChessGame{
                       movePiece(chessBoard, playerChoiceX, playerChoiceY, playerMoveX, playerMoveY, bishop1 , chessBoardGui, 'b');
                       
                     }else{
-                      System.out.println("Invalid move, piece cannot move that way"); 
+                      chessBoardGui.errMessage();
                     }
                   }
                 }else if (playerChoiceX - playerMoveX < 0 && playerChoiceY - playerMoveY < 0){ //if it is going down and right
@@ -271,7 +276,7 @@ public class ChessGame{
                       movePiece(chessBoard, playerChoiceX, playerChoiceY, playerMoveX, playerMoveY, bishop1 , chessBoardGui, 'b');
                       
                     }else{
-                      System.out.println("Invalid move, piece cannot move that way"); 
+                      chessBoardGui.errMessage();
                     }
                   }
                 }else if (playerChoiceX - playerMoveX > 0 && playerChoiceY - playerMoveY > 0){ //if it is going up and left
@@ -284,7 +289,7 @@ public class ChessGame{
                       movePiece(chessBoard, playerChoiceX, playerChoiceY, playerMoveX, playerMoveY, bishop1, chessBoardGui, 'b');
                       
                     }else{
-                      System.out.println("Invalid move, piece cannot move that way"); 
+                      chessBoardGui.errMessage();
                     }
                   }
                 }else{ //if it is going up and right
@@ -297,12 +302,12 @@ public class ChessGame{
                       movePiece(chessBoard, playerChoiceX, playerChoiceY, playerMoveX, playerMoveY, bishop1, chessBoardGui, 'b');
                       
                     }else{
-                      System.out.println("Invalid move, piece cannot move that way"); 
+                      chessBoardGui.errMessage();
                     }
                   }
                 }
               }else{
-                System.out.println("Invalid move, piece cannot move that way"); 
+                chessBoardGui.errMessage();
               }
             }else if (chessBoard[playerChoiceY][playerChoiceX] == queen1){ //if the piece is a queen
               if (Math.abs(playerChoiceY - playerMoveY) != Math.abs(playerChoiceX - playerMoveX)){ //if it is moving horizontally or vertically
@@ -316,7 +321,7 @@ public class ChessGame{
                       if (checkSpaces(chessBoard, playerChoiceX, playerChoiceY, playerMoveX, playerMoveY) == true){ //if the spaces are empty
                         movePiece(chessBoard, playerChoiceX, playerChoiceY, playerMoveX, playerMoveY, queen1, chessBoardGui, 'q');
                       }else{
-                        System.out.println("Invalid move, piece cannot move that way");
+                        chessBoardGui.errMessage();
                       }
                     }
                   }else{ //if it is moving right 
@@ -329,7 +334,7 @@ public class ChessGame{
                         movePiece(chessBoard, playerChoiceX, playerChoiceY, playerMoveX, playerMoveY, queen1, chessBoardGui, 'q');
                         
                       }else{
-                        System.out.println("Invalid move, piece cannot move that way"); 
+                        chessBoardGui.errMessage();
                       }
                     }
                   }    
@@ -344,7 +349,7 @@ public class ChessGame{
                         movePiece(chessBoard, playerChoiceX, playerChoiceY, playerMoveX, playerMoveY, queen1, chessBoardGui, 'q');
                         
                       }else{
-                        System.out.println("Invalid move, piece cannot move that way"); 
+                        chessBoardGui.errMessage();
                       }
                     }
                   }else{ //if it is moving up
@@ -357,12 +362,12 @@ public class ChessGame{
                         movePiece(chessBoard, playerChoiceX, playerChoiceY, playerMoveX, playerMoveY, queen1, chessBoardGui, 'q');
                         
                       }else{
-                        System.out.println("Invalid move, piece cannot move that way"); 
+                        chessBoardGui.errMessage();
                       }
                     }
                   }
                 }else{
-                  System.out.println("Invalid move, piece cannot move that way"); 
+                  chessBoardGui.errMessage();
                 }
               }else if(Math.abs(playerChoiceX - playerMoveX) == Math.abs(playerChoiceY - playerMoveY)){ //if piece is moving diagonally
                 
@@ -376,7 +381,7 @@ public class ChessGame{
                       movePiece(chessBoard, playerChoiceX, playerChoiceY, playerMoveX, playerMoveY, queen1, chessBoardGui, 'q');
                       
                     }else{
-                      System.out.println("Invalid move, piece cannot move that way"); 
+                      chessBoardGui.errMessage();
                     }
                   }
                 }else if (playerChoiceX - playerMoveX < 0 && playerChoiceY - playerMoveY < 0){ //if it is going down and right
@@ -389,7 +394,7 @@ public class ChessGame{
                       movePiece(chessBoard, playerChoiceX, playerChoiceY, playerMoveX, playerMoveY, queen1, chessBoardGui, 'q');
                       
                     }else{
-                      System.out.println("Invalid move, piece cannot move that way"); 
+                      chessBoardGui.errMessage();
                     }
                   }
                 }else if (playerChoiceX - playerMoveX > 0 && playerChoiceY - playerMoveY > 0){ //if it is going up and left
@@ -402,7 +407,7 @@ public class ChessGame{
                       movePiece(chessBoard, playerChoiceX, playerChoiceY, playerMoveX, playerMoveY, queen1, chessBoardGui, 'q');
                       
                     }else{
-                      System.out.println("Invalid move, piece cannot move that way"); 
+                      chessBoardGui.errMessage();
                     }
                   }
                 }else{ //if it is going up and right
@@ -415,13 +420,13 @@ public class ChessGame{
                       movePiece(chessBoard, playerChoiceX, playerChoiceY, playerMoveX, playerMoveY, queen1, chessBoardGui, 'q');
                       
                     }else{
-                      System.out.println("Invalid move, piece cannot move that way"); 
+                      chessBoardGui.errMessage();
                     }
                   }
                 }
                 
               }else{
-                System.out.println("Invalid move, piece cannot move that way");
+                chessBoardGui.errMessage();
               }
               
             }else if (chessBoard[playerChoiceY][playerChoiceX] == king1){ //if the piece is a king
@@ -442,15 +447,15 @@ public class ChessGame{
               }else if (playerChoiceX - playerMoveX == 1 && playerMoveY - playerChoiceY == 1){ //if the king is moving right and down
                 movePiece(chessBoard, playerChoiceX, playerChoiceY, playerMoveX, playerMoveY, king1, chessBoardGui, 'K');
               }else{
-                System.out.println("Invalid move, piece cannot move that many spaces");
+                chessBoardGui.errMessage();
               }
             }
             
           }else{
-            System.out.println("Invalid move, there is already a piece in the selected coordinate"); 
+            chessBoardGui.errMessage();
           }
         }else{
-          System.out.println("Invalid choice, there is no piece in selected coordinate"); 
+          chessBoardGui.errMessage();
         }
         
       }else if (playerTurn % 2 != 0){ //player 2 move
@@ -464,10 +469,10 @@ public class ChessGame{
                     if (chessBoard[playerMoveY][playerMoveX] == null){
                       movePiece(chessBoard, playerChoiceX, playerChoiceY, playerMoveX, playerMoveY, pawn2, chessBoardGui, 'p');
                     }else{
-                      System.out.println("Invalid move, piece cannot move that way"); 
+                      chessBoardGui.errMessage();
                     }
                   }else{
-                    System.out.println("Invalid move, piece cannot move that way"); 
+                    chessBoardGui.errMessage();
                   }
                 }else if (playerChoiceY - playerMoveY == 1){ //if the piece has moved one space
                   if (chessBoard[playerMoveY][playerMoveX] == null){
@@ -477,23 +482,23 @@ public class ChessGame{
                       movePiece(chessBoard, playerChoiceX, playerChoiceY, playerMoveX, playerMoveY, pawn2, chessBoardGui, 'p');
                     }
                   }else{
-                    System.out.println("Invalid move, piece cannot move that way");
+                    chessBoardGui.errMessage();
                   }
                 }else{
-                  System.out.println("Invalid move, piece cannot move that way"); 
+                  chessBoardGui.errMessage();
                 }
               }else if (playerChoiceX - playerMoveX == 1 || playerChoiceX - playerMoveX == -1){ //if the move is diagonal
                 if (playerChoiceY - playerMoveY == 1){
                   if (chessBoard[playerMoveY][playerMoveX] != null){
                     movePiece(chessBoard, playerChoiceX, playerChoiceY, playerMoveX, playerMoveY, pawn2, chessBoardGui, 'p');
                   }else{
-                    System.out.println("Invalid move, piece cannot move that way"); 
+                    chessBoardGui.errMessage();
                   }
                 }else{
-                  System.out.println("Invalid move, piece cannot move that way"); 
+                  chessBoardGui.errMessage();
                 }
               }else{
-                System.out.println("Invalid move, piece cannot move that way"); 
+                chessBoardGui.errMessage();
               }
             }else if (chessBoard[playerChoiceY][playerChoiceX] == tower2){ //if the piece is a tower
               if (playerChoiceY - playerMoveY == 0 && playerChoiceX - playerMoveX != 0){ //if the tower moves along x axis
@@ -507,7 +512,7 @@ public class ChessGame{
                       movePiece(chessBoard, playerChoiceX, playerChoiceY, playerMoveX, playerMoveY, tower2, chessBoardGui, 't');
                       
                     }else{
-                      System.out.println("Invalid move, piece cannot move that way");
+                      chessBoardGui.errMessage();
                     }
                   }
                 }else{ //if it is moving right 
@@ -520,7 +525,7 @@ public class ChessGame{
                       movePiece(chessBoard, playerChoiceX, playerChoiceY, playerMoveX, playerMoveY, tower2, chessBoardGui, 't');
                       
                     }else{
-                      System.out.println("Invalid move, piece cannot move that way"); 
+                      chessBoardGui.errMessage();
                     }
                   }
                 }    
@@ -535,7 +540,7 @@ public class ChessGame{
                       movePiece(chessBoard, playerChoiceX, playerChoiceY, playerMoveX, playerMoveY, tower2, chessBoardGui, 't');
                       
                     }else{
-                      System.out.println("Invalid move, piece cannot move that way"); 
+                      chessBoardGui.errMessage();
                     }
                   }
                 }else{ //if it is moving up
@@ -548,12 +553,12 @@ public class ChessGame{
                       movePiece(chessBoard, playerChoiceX, playerChoiceY, playerMoveX, playerMoveY, tower2, chessBoardGui, 't');
                       
                     }else{
-                      System.out.println("Invalid move, piece cannot move that way"); 
+                      chessBoardGui.errMessage();
                     }
                   }
                 }
               }else{
-                System.out.println("Invalid move, piece cannot move that way"); 
+                chessBoardGui.errMessage();
               }
             }else if (chessBoard[playerChoiceY][playerChoiceX] == knight2){ //if the piece is a knight
               if ((Math.abs(playerChoiceX - playerMoveX) == 2) && (Math.abs(playerChoiceY - playerMoveY) == 1)){ //if it moves 2 spaces on the x axis and one on the y axis
@@ -561,7 +566,7 @@ public class ChessGame{
               }else if((Math.abs(playerChoiceX - playerMoveX) == 1) && (Math.abs(playerChoiceY - playerMoveY) == 2)){ //if it moves 2 spaces on the y axis and one on the x axis
                 movePiece(chessBoard, playerChoiceX, playerChoiceY, playerMoveX, playerMoveY, knight2, chessBoardGui, 'k');
               }else{
-                System.out.println("Invalid move, piece cannot move that way");
+                chessBoardGui.errMessage();
               }
               //dont need to worry about spaces (can jump over pieces)
             }else if (chessBoard[playerChoiceY][playerChoiceX] == bishop2){ //if the piece is a bishop
@@ -576,7 +581,7 @@ public class ChessGame{
                       movePiece(chessBoard, playerChoiceX, playerChoiceY, playerMoveX, playerMoveY, bishop2, chessBoardGui, 'b');
                       
                     }else{
-                      System.out.println("Invalid move, piece cannot move that way"); 
+                      chessBoardGui.errMessage();
                     }
                   }
                 }else if (playerChoiceX - playerMoveX < 0 && playerChoiceY - playerMoveY < 0){ //if it is going down and right
@@ -589,7 +594,7 @@ public class ChessGame{
                       movePiece(chessBoard, playerChoiceX, playerChoiceY, playerMoveX, playerMoveY, bishop2, chessBoardGui, 'b');
                       
                     }else{
-                      System.out.println("Invalid move, piece cannot move that way"); 
+                      chessBoardGui.errMessage();
                     }
                   }
                 }else if (playerChoiceX - playerMoveX > 0 && playerChoiceY - playerMoveY > 0){ //if it is going up and left
@@ -602,7 +607,7 @@ public class ChessGame{
                       movePiece(chessBoard, playerChoiceX, playerChoiceY, playerMoveX, playerMoveY, bishop2, chessBoardGui, 'b');
                       
                     }else{
-                      System.out.println("Invalid move, piece cannot move that way"); 
+                      chessBoardGui.errMessage();
                     }
                   }
                 }else{ //if it is going up and right
@@ -614,12 +619,12 @@ public class ChessGame{
                       movePiece(chessBoard, playerChoiceX, playerChoiceY, playerMoveX, playerMoveY, bishop2, chessBoardGui, 'b');
                       
                     }else{
-                      System.out.println("Invalid move, piece cannot move that way"); 
+                      chessBoardGui.errMessage();
                     }
                   }
                 }
               }else{
-                System.out.println("Invalid move, piece cannot move that way"); 
+                chessBoardGui.errMessage();
               }
             }else if (chessBoard[playerChoiceY][playerChoiceX] == queen2){ //if the piece is a queen
               if (Math.abs(playerChoiceY - playerMoveY) != Math.abs(playerChoiceX - playerMoveX)){ //if it is moving horizontally or vertically
@@ -634,7 +639,7 @@ public class ChessGame{
                         movePiece(chessBoard, playerChoiceX, playerChoiceY, playerMoveX, playerMoveY, queen2, chessBoardGui, 'q');
                         
                       }else{
-                        System.out.println("Invalid move, piece cannot move that way");
+                        chessBoardGui.errMessage();
                       }
                     }
                   }else{ //if it is moving right 
@@ -647,7 +652,7 @@ public class ChessGame{
                         movePiece(chessBoard, playerChoiceX, playerChoiceY, playerMoveX, playerMoveY, queen2, chessBoardGui, 'q');
                         
                       }else{
-                        System.out.println("Invalid move, piece cannot move that way"); 
+                        chessBoardGui.errMessage();
                       }
                     }
                   }    
@@ -662,7 +667,7 @@ public class ChessGame{
                         movePiece(chessBoard, playerChoiceX, playerChoiceY, playerMoveX, playerMoveY, queen2, chessBoardGui, 'q');
                         
                       }else{
-                        System.out.println("Invalid move, piece cannot move that way"); 
+                        chessBoardGui.errMessage();
                       }
                     }
                   }else{ //if it is moving up
@@ -675,12 +680,12 @@ public class ChessGame{
                         movePiece(chessBoard, playerChoiceX, playerChoiceY, playerMoveX, playerMoveY, queen2, chessBoardGui, 'q');
                         
                       }else{
-                        System.out.println("Invalid move, piece cannot move that way"); 
+                        chessBoardGui.errMessage();
                       }
                     }
                   }
                 }else{
-                  System.out.println("Invalid move, piece cannot move that way"); 
+                  chessBoardGui.errMessage();
                 }
               }else if(Math.abs(playerChoiceX - playerMoveX) == Math.abs(playerChoiceY - playerMoveY)){ //if piece is moving diagonally
                 
@@ -694,7 +699,7 @@ public class ChessGame{
                       movePiece(chessBoard, playerChoiceX, playerChoiceY, playerMoveX, playerMoveY, queen2, chessBoardGui, 'q');
                       
                     }else{
-                      System.out.println("Invalid move, piece cannot move that way"); 
+                      chessBoardGui.errMessage();
                     }
                   }
                 }else if (playerChoiceX - playerMoveX < 0 && playerChoiceY - playerMoveY < 0){ //if it is going down and right
@@ -707,7 +712,7 @@ public class ChessGame{
                       movePiece(chessBoard, playerChoiceX, playerChoiceY, playerMoveX, playerMoveY, queen2, chessBoardGui, 'q');
                       
                     }else{
-                      System.out.println("Invalid move, piece cannot move that way"); 
+                      chessBoardGui.errMessage();
                     }
                   }
                 }else if (playerChoiceX - playerMoveX > 0 && playerChoiceY - playerMoveY > 0){ //if it is going up and left
@@ -720,7 +725,7 @@ public class ChessGame{
                       movePiece(chessBoard, playerChoiceX, playerChoiceY, playerMoveX, playerMoveY, queen2, chessBoardGui, 'q');
                       
                     }else{
-                      System.out.println("Invalid move, piece cannot move that way"); 
+                      chessBoardGui.errMessage();
                     }
                   }
                 }else{ //if it is going up and right
@@ -733,13 +738,13 @@ public class ChessGame{
                       movePiece(chessBoard, playerChoiceX, playerChoiceY, playerMoveX, playerMoveY, queen2, chessBoardGui, 'q');
                       
                     }else{
-                      System.out.println("Invalid move, piece cannot move that way"); 
+                      chessBoardGui.errMessage();
                     }
                   }
                 }
                 
               }else{
-                System.out.println("Invalid move, piece cannot move that way");
+                chessBoardGui.errMessage();
               }
               
             }else if (chessBoard[playerChoiceY][playerChoiceX] == king2){ //if the piece is a king
@@ -760,15 +765,15 @@ public class ChessGame{
               }else if (playerChoiceX - playerMoveX == 1 && playerMoveY - playerChoiceY == 1){ //if the king is moving right and down
                 movePiece(chessBoard, playerChoiceX, playerChoiceY, playerMoveX, playerMoveY, king2, chessBoardGui, 'K');
               }else{
-                System.out.println("Invalid move, piece cannot move that many spaces");
+                chessBoardGui.errMessage();
               }
             }
             
           }else{
-            System.out.println("Invalid move, there is already a piece in the selected coordinate"); 
+            chessBoardGui.errMessage();
           }
         }else{
-          System.out.println("Invalid choice, there is no piece in selected coordinate"); 
+          chessBoardGui.errMessage();
         }
         
       }
@@ -793,9 +798,11 @@ public class ChessGame{
       
       if (king1Status == false){ //if player 1's king is dead
         winCondition = true;
+        chessBoardGui.playerTurnRemove();
         chessBoardGui.player2Winner();
       }else if (king2Status == false){ //if player 2's king is dead 
         winCondition = true;
+        chessBoardGui.playerTurnRemove();
         chessBoardGui.player1Winner();
       }else{
         
@@ -803,25 +810,25 @@ public class ChessGame{
       
     }
     
-    try{
-      FileWriter fw = new FileWriter("WinningScores.txt"); //file called WinningScores.txt
-      BufferedWriter WriteFileBuffer = new BufferedWriter(fw);
-      
-      if (oldScore > gameNumMoves){
-        if (gameNumMoves % 2 == 0){
-          WriteFileBuffer.write(Integer.toString(gameNumMoves / 2));
-        }else{
-          WriteFileBuffer.write(Integer.toString((gameNumMoves + 1) / 2));
-        }
-      }else{
-        WriteFileBuffer.write(Integer.toString(oldScore));
-      }
-      
-      WriteFileBuffer.newLine();
-      WriteFileBuffer.close();
-    }catch(java.io.IOException e){
-      System.out.println(e);
-    }
+//    try{
+//      FileWriter fw = new FileWriter("WinningScores.txt"); //file called WinningScores.txt
+//      BufferedWriter WriteFileBuffer = new BufferedWriter(fw);
+//      
+//      if (oldScore > gameNumMoves){
+//        if (gameNumMoves % 2 == 0){
+//          WriteFileBuffer.write(Integer.toString(gameNumMoves / 2));
+//        }else{
+//          WriteFileBuffer.write(Integer.toString((gameNumMoves + 1) / 2));
+//        }
+//      }else{
+//        WriteFileBuffer.write(Integer.toString(oldScore));
+//      }
+//      
+//      WriteFileBuffer.newLine();
+//      WriteFileBuffer.close();
+//    }catch(java.io.IOException e){
+//      System.out.println(e);
+//    }
     
   }//Main
   
@@ -943,8 +950,13 @@ public class ChessGame{
     
     playerTurn += 1;
     gameNumMoves += 1;
+  
     
-    System.out.println("It is player " + (playerTurn % 2 + 1) + "'s turn");
+    if(playerTurn % 2 + 1 == 1){
+      g.playerOneTurn();
+    }else{
+      g.playerTwoTurn();
+    }
     
   }//movePiece
   
