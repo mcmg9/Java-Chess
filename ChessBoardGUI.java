@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import java.io.*;
+import javax.swing.JOptionPane;
 
 public class ChessBoardGUI extends JFrame implements ActionListener{
   
@@ -16,44 +17,61 @@ public class ChessBoardGUI extends JFrame implements ActionListener{
   private int yCorMove = 8;
   private int clickCounter = 0;
   
-  JLabel player1Wins = new JLabel("Player 1 Wins!");
-  JLabel player2Wins = new JLabel("Player 2 Wins!");
+  JLabel player1Wins = new JLabel("Black Wins!");
+  JLabel player2Wins = new JLabel("White Wins!");
+  
+  JLabel errMessage = new JLabel("Invalid Move");
+  
+  JLabel playerMove1 = new JLabel("It is blacks's turn");
+  JLabel playerMove2 = new JLabel("It is whites's turn");
   
   public ChessBoardGUI(){
     super("Chess Game"); 
     
     setLayout(null);
     
-    String highScoreMoves = "";
+   // String highScoreMoves = "";
     
-    try {
-      File highScore = new File("WinningScores.txt");
-      FileReader in = new FileReader(highScore);
-      BufferedReader br = new BufferedReader(in);
-      highScoreMoves = br.readLine();
-    }catch(FileNotFoundException e){
-      System.out.println(e);
-    } catch (IOException e2) {
-      System.out.println(e2);
-    }
+//    try {
+//      File highScore = new File("WinningScores.txt");
+//      FileReader in = new FileReader(highScore);
+//      BufferedReader br = new BufferedReader(in);
+//      highScoreMoves = br.readLine();
+//    }catch(FileNotFoundException e){
+//      System.out.println(e);
+//    } catch (IOException e2) {
+//      System.out.println(e2);
+//    }
+//    
+//    JLabel highScoreText = new JLabel("High Score: " + highScoreMoves);
+//    highScoreText.setBounds(830, 50, 250, 100);
+//    highScoreText.setLayout(new BorderLayout());
+//    highScoreText.setFont(new Font("Arial Black", Font.PLAIN, 30));
+//    add(highScoreText);
     
-    JLabel highScoreText = new JLabel("High Score: " + highScoreMoves);
-    highScoreText.setBounds(830, 50, 250, 100);
-    highScoreText.setLayout(new BorderLayout());
-    highScoreText.setFont(new Font("Arial Black", Font.PLAIN, 30));
-    add(highScoreText);
-    
-    player2Wins.setBounds(830, 150, 250, 200);
+    player2Wins.setBounds(845, 150, 250, 200);
     player2Wins.setLayout(new BorderLayout());
     player2Wins.setFont(new Font("Arial Black", Font.PLAIN, 30));
     add(player2Wins);
     player2Wins.setVisible(false);
     
-    player1Wins.setBounds(830, 150, 250, 200);
+    player1Wins.setBounds(845, 150, 250, 200);
     player1Wins.setLayout(new BorderLayout());
     player1Wins.setFont(new Font("Arial Black", Font.PLAIN, 30));
     add(player1Wins);
     player1Wins.setVisible(false);
+    
+    playerMove1.setBounds(845, 50, 250, 200);
+    playerMove1.setLayout(new BorderLayout());
+    playerMove1.setFont(new Font("Arial Black", Font.PLAIN, 20));
+    add(playerMove1);
+    playerMove1.setVisible(false);
+    
+    playerMove2.setBounds(845, 50, 250, 200);
+    playerMove2.setLayout(new BorderLayout());
+    playerMove2.setFont(new Font("Arial Black", Font.PLAIN, 20));
+    add(playerMove2);
+    playerMove2.setVisible(true);
     
     for(int i = 0; i < 8; i++) {
       for(int j = 0; j < 8; j++){
@@ -233,5 +251,52 @@ public class ChessBoardGUI extends JFrame implements ActionListener{
   public void player2Winner(){
     player2Wins.setVisible(true);
   }//player2Winner
+  
+  public void changeButtonBlue(int x, int y){
+    
+    buttonArray[x][y].setBackground(Color.CYAN);
+    
+  }//changeButtonBlue
+  
+  public void changeButtonNorm(int x, int y){
+    
+    if((x + y) % 2 == 0){
+      
+      buttonArray[x][y].setBackground(Color.WHITE);
+    
+    }else{
+      
+      buttonArray[x][y].setBackground(Color.BLACK);
+      
+    }
+  }//changeButtonNorm
+  
+  public void errMessage(){
+    
+    JOptionPane.showMessageDialog(null, "Invalid Move");
+    
+  }//errMessage
+  
+  
+  public void playerOneTurn(){
+    
+    playerMove2.setVisible(false);
+    playerMove1.setVisible(true);
+    
+  }//playerOneTurn
+  
+   public void playerTwoTurn(){
+    
+    playerMove1.setVisible(false);
+    playerMove2.setVisible(true);
+    
+  }//playerTwoTurn
+   
+  public void playerTurnRemove(){
+    
+    playerMove1.setVisible(false);
+    playerMove2.setVisible(false);
+    
+  }//playerTurnRemove
   
 }//chessBoardGUI
