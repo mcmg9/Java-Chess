@@ -11,21 +11,6 @@ public class ChessGame{
   
   public static void main(String [] args){
     
-//    //getting high score
-//    String scoreString = "";
-//    int oldScore = 0;   
-//    try {
-//      File highScore = new File("WinningScores.txt");
-//      FileReader in = new FileReader(highScore);
-//      BufferedReader br = new BufferedReader(in);
-//      scoreString = br.readLine();
-//      oldScore = Integer.parseInt(scoreString);
-//    }catch(FileNotFoundException e){
-//      System.out.println(e);
-//    } catch (IOException e2) {
-//      System.out.println(e2);
-//    }
-    
     //what piece they want to move
     int playerChoiceX;
     int playerChoiceY;
@@ -800,35 +785,19 @@ public class ChessGame{
         winCondition = true;
         chessBoardGui.playerTurnRemove();
         chessBoardGui.player2Winner();
+        chessBoardGui.gameEndMessage("White");
       }else if (king2Status == false){ //if player 2's king is dead 
         winCondition = true;
         chessBoardGui.playerTurnRemove();
         chessBoardGui.player1Winner();
+        chessBoardGui.gameEndMessage("Black");
       }else{
         
       }
       
     }
     
-//    try{
-//      FileWriter fw = new FileWriter("WinningScores.txt"); //file called WinningScores.txt
-//      BufferedWriter WriteFileBuffer = new BufferedWriter(fw);
-//      
-//      if (oldScore > gameNumMoves){
-//        if (gameNumMoves % 2 == 0){
-//          WriteFileBuffer.write(Integer.toString(gameNumMoves / 2));
-//        }else{
-//          WriteFileBuffer.write(Integer.toString((gameNumMoves + 1) / 2));
-//        }
-//      }else{
-//        WriteFileBuffer.write(Integer.toString(oldScore));
-//      }
-//      
-//      WriteFileBuffer.newLine();
-//      WriteFileBuffer.close();
-//    }catch(java.io.IOException e){
-//      System.out.println(e);
-//    }
+    System.exit(0);
     
   }//Main
   
@@ -947,10 +916,12 @@ public class ChessGame{
     }
     
     g.removeIcon(g.getButtonArray(), choiceY, choiceX);
+
     
     playerTurn += 1;
     gameNumMoves += 1;
-  
+    
+  //  g.drawLine(choiceY, choiceX, moveY, moveX);
     
     if(playerTurn % 2 + 1 == 1){
       g.playerOneTurn();
