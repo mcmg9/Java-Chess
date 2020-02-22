@@ -7,6 +7,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import java.io.*;
 import javax.swing.JOptionPane;
+import java.util.LinkedList;
 
 public class ChessBoardGUI extends JFrame implements ActionListener{
   
@@ -29,25 +30,6 @@ public class ChessBoardGUI extends JFrame implements ActionListener{
     super("Chess Game"); 
     
     setLayout(null);
-    
-   // String highScoreMoves = "";
-    
-//    try {
-//      File highScore = new File("WinningScores.txt");
-//      FileReader in = new FileReader(highScore);
-//      BufferedReader br = new BufferedReader(in);
-//      highScoreMoves = br.readLine();
-//    }catch(FileNotFoundException e){
-//      System.out.println(e);
-//    } catch (IOException e2) {
-//      System.out.println(e2);
-//    }
-//    
-//    JLabel highScoreText = new JLabel("High Score: " + highScoreMoves);
-//    highScoreText.setBounds(830, 50, 250, 100);
-//    highScoreText.setLayout(new BorderLayout());
-//    highScoreText.setFont(new Font("Arial Black", Font.PLAIN, 30));
-//    add(highScoreText);
     
     player2Wins.setBounds(845, 150, 250, 200);
     player2Wins.setLayout(new BorderLayout());
@@ -276,6 +258,12 @@ public class ChessBoardGUI extends JFrame implements ActionListener{
     JOptionPane.showMessageDialog(null, "Invalid Move");
     
   }//errMessage
+  
+   public void gameEndMessage(String winner){
+    
+    JOptionPane.showMessageDialog(null, winner + " wins!");
+    
+  }//gameEndMessage
   
   
   public void playerOneTurn(){
