@@ -5,4 +5,4 @@ The ChessGame.jar file is all you need to download in order to run the game, the
 
 White starts the game.
 When selecting your piece, the tile will turn blue to indicate your selection.
-Game ends when one of the player's kings are dead.
+Game ends when one of the player's kings are dead (allowing for maximum bm during a checkmate).
